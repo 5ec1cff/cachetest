@@ -192,6 +192,7 @@ jobs:
             ./gradlew --build-cache assembleRelease -PIS_PR_BUILD=true -Dorg.gradle.caching.debug=true
           else
             ./gradlew --build-cache assembleRelease -Dorg.gradle.caching.debug=true
+            echo 1
           fi
 
       - name: Upload build artifact
