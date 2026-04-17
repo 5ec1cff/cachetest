@@ -41,8 +41,7 @@ jobs:
 
     - uses: Swatinem/rust-cache@v2
       with:
-        workspaces: userspace/ksud
-        cache-targets: false
+        cache-targets: true
         prefix-key: "ksud-${{ inputs.target }}"
 
     - uses: nttld/setup-ndk@v1

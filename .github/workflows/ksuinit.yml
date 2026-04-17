@@ -16,8 +16,7 @@ jobs:
 
     - uses: Swatinem/rust-cache@v2
       with:
-        workspaces: . -> target
-        cache-targets: false
+        cache-targets: true
         prefix-key: "ksuinit"
 
     - name: Build ksuinit
