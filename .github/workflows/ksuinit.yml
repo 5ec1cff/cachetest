@@ -19,7 +19,33 @@ jobs:
         cache-targets: true
         prefix-key: "ksuinit"
 
+    - name: Check NDK
+      id: check-ndk
+      run: |
+        if [ "$(basename $ANDROID_NDK_LATEST_HOME)" == "29.0.14206865" ]; then
+          echo "need_setup_ndk=0" >> $GITHUB_OUTPUT
+        else
+          echo "need_setup_ndk=1" >> $GITHUB_OUTPUT
+        fi
+
+    - uses: nttld/setup-ndk@v1
+      id: setup-ndk
+      if: ${{ steps.check-ndk.outputs.need_setup_ndk == '1' }}
+      with:
+        ndk-version: r29
+
+    - name: Set NDK HOME
+      id: set-ndk
+      run: |
+        if [ "${{ steps.check-ndk.outputs.need_setup_ndk }}" == "0" ]; then
+          echo "ndk_path=$ANDROID_NDK_LATEST_HOME" >> $GITHUB_OUTPUT
+        else
+          echo "ndk_path=${{ steps.setup-ndk.outputs.ndk-path }}" >> $GITHUB_OUTPUT
+        fi
+
     - name: Build ksuinit
+      env:
+        ANDROID_NDK_HOME: ${{ steps.set-ndk.outputs.ndk_path }}
       run: |
         LLVM_BIN=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin
         export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER="$LLVM_BIN/aarch64-linux-android26-clang"
