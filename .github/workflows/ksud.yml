@@ -43,6 +43,7 @@ jobs:
       with:
         workspaces: userspace/ksud
         cache-targets: false
+        prefix-key: "ksud-${{ inputs.target }}"
 
     - uses: nttld/setup-ndk@v1
       id: setup-ndk

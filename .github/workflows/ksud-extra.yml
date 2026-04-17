@@ -48,6 +48,7 @@ jobs:
       with:
         workspaces: userspace/ksud
         cache-targets: false
+        prefix-key: "ksud-extra-${{ inputs.target }}"
 
     - name: Install cross
       run: |
