@@ -28,6 +28,7 @@ on:
       - 'kernel/**'
       - 'userspace/**'
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   generate-key:
@@ -155,7 +156,7 @@ jobs:
               echo KEY_PASSWORD='${{ secrets.KEY_PASSWORD }}'
               echo KEYSTORE_FILE='key.jks'
             } >> gradle.properties
-            echo ${{ secrets.KEYSTORE }} | base64 -d > key.jks
+            echo "${{ secrets.KEYSTORE }}" | base64 -d > key.jks
           fi
 
       - name: Write PR key
@@ -188,9 +189,9 @@ jobs:
       - name: Build with Gradle
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ./gradlew clean assembleRelease -PIS_PR_BUILD=true
+            ./gradlew --build-cache assembleRelease -PIS_PR_BUILD=true
           else
-            ./gradlew clean assembleRelease
+            ./gradlew --build-cache assembleRelease
           fi
 
       - name: Upload build artifact
