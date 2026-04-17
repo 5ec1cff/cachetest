@@ -189,9 +189,9 @@ jobs:
       - name: Build with Gradle
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ./gradlew --build-cache assembleRelease -PIS_PR_BUILD=true
+            ./gradlew --build-cache assembleRelease -PIS_PR_BUILD=true -Dorg.gradle.caching.debug=true
           else
-            ./gradlew --build-cache assembleRelease
+            ./gradlew --build-cache assembleRelease -Dorg.gradle.caching.debug=true
           fi
 
       - name: Upload build artifact
